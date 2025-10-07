@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.Repository"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.API", "WorkTimeTracker.API\WorkTimeTracker.API.csproj", "{0B0B230D-5E3A-4C7E-9973-89049E8F13E4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A2041569-D04B-4425-996A-8E515B1D9207} = {A2041569-D04B-4425-996A-8E515B1D9207}
+		{A5F0C491-B84F-4A54-A7CC-A88F254A3395} = {A5F0C491-B84F-4A54-A7CC-A88F254A3395}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTracker.Business", "WorkTimeTracker.Business\WorkTimeTracker.Business.csproj", "{A2041569-D04B-4425-996A-8E515B1D9207}"
 EndProject
