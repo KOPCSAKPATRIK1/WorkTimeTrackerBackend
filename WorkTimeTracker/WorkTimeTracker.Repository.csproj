@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WorkTimeTracker.Core\WorkTimeTracker.Core.csproj" />
+  </ItemGroup>
+
 </Project>

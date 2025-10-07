@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using WorkTimeTracker.Models;
+using WorkTimeTracker.Core.Models.Domain;
 
 namespace WorkTimeTracker.Data;
 
