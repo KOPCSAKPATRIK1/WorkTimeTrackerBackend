@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WorkTimeTracker.Core.DTOs;
 using WorkTimeTracker.Core.Interfaces.Business;
@@ -11,74 +12,63 @@ namespace WorkTimeTracker.API.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly WorkTimeTrackerContext _context;
-        private readonly IJwtTokenService _jwtTokenService;
+        private readonly IAuthService _authService;
 
-        public AuthController(WorkTimeTrackerContext context, IJwtTokenService jwtTokenService)
+        public AuthController(IAuthService authService)
         {
-            _context = context;
-            _jwtTokenService = jwtTokenService;
+            _authService = authService;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<AuthResponseDto>> Register(RegisterDto registerDto)
         {
-            // Ellenőrzés: létezik-e már az email
-            if (await _context.Users.AnyAsync(u => u.Email == registerDto.Email))
+            try
             {
-                return BadRequest("Ez az email cím már regisztrálva van.");
+                var response = await _authService.RegisterAsync(registerDto);
+                return Ok(response);
             }
-
-            // Új user létrehozása (jelszó simán tárolva)
-            var user = new User
+            catch (InvalidOperationException ex)
             {
-                Email = registerDto.Email,
-                PasswordHash = registerDto.Password, // Egyszerűen tároljuk
-                FullName = registerDto.FullName,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            // Token generálás
-            var token = _jwtTokenService.GenerateToken(user);
-
-            var response = new AuthResponseDto
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
             {
-                Token = token,
-                Email = user.Email,
-                FullName = user.FullName,
-                Expiration = DateTime.UtcNow.AddMinutes(60)
-            };
-
-            return Ok(response);
+                return StatusCode(500, "Hiba történt a regisztráció során.");
+            }
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<AuthResponseDto>> Login(LoginDto loginDto)
         {
-            // User keresése email és jelszó alapján
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.PasswordHash == loginDto.Password);
-
-            if (user == null)
+            try
             {
-                return Unauthorized("Hibás email vagy jelszó.");
+                var response = await _authService.LoginAsync(loginDto);
+                return Ok(response);
             }
-
-            // Token generálás
-            var token = _jwtTokenService.GenerateToken(user);
-
-            var response = new AuthResponseDto
+            catch (UnauthorizedAccessException ex)
             {
-                Token = token,
-                Email = user.Email,
-                FullName = user.FullName,
-                Expiration = DateTime.UtcNow.AddMinutes(60)
-            };
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Hiba történt a bejelentkezés során.");
+            }
+        }
 
-            return Ok(response);
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult GetCurrentUser()
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            var fullName = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+
+            return Ok(new
+            {
+                userId = userId,
+                email = email,
+                fullName = fullName
+            });
         }
     }
 }
