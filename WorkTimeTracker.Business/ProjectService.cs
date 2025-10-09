@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using WorkTimeTracker.Core.Interfaces.Business;
 using WorkTimeTracker.Core.Interfaces.Repository;
 using WorkTimeTracker.Core.Models.Domain;
-using WorkTimeTracker.Data;
 
 namespace WorkTimeTracker.Business
 {

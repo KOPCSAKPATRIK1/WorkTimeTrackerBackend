@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using WorkTimeTracker.Business;
 using WorkTimeTracker.Core.Interfaces.Business;
 using WorkTimeTracker.Core.Interfaces.Repository;
-using WorkTimeTracker.Data;
+using WorkTimeTracker.Repository.Data;
 using WorkTimeTracker.Repository.Repository;
 
 var builder = WebApplication.CreateBuilder(args);

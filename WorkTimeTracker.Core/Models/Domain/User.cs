@@ -15,7 +15,11 @@ public partial class User
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
+    public virtual ICollection<Project> ProjectAssignedToUsers { get; set; } = new List<Project>();
+
+    public virtual ICollection<Project> ProjectCreatedByUsers { get; set; } = new List<Project>();
+
+    public virtual ICollection<WorkTask> Tasks { get; set; } = new List<WorkTask>();
 
     public virtual ICollection<TimeEntry> TimeEntries { get; set; } = new List<TimeEntry>();
 }

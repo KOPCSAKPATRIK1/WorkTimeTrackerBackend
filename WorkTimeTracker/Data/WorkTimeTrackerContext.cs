@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using WorkTimeTracker.Core.Models.Domain;
 
-namespace WorkTimeTracker.Data;
+namespace WorkTimeTracker.Repository.Data;
 
 public partial class WorkTimeTrackerContext : DbContext
 {
@@ -37,7 +37,11 @@ public partial class WorkTimeTrackerContext : DbContext
             entity.Property(e => e.Description).HasMaxLength(1000);
             entity.Property(e => e.Name).HasMaxLength(200);
 
-            entity.HasOne(d => d.CreatedByUser).WithMany(p => p.Projects)
+            entity.HasOne(d => d.AssignedToUser).WithMany(p => p.ProjectAssignedToUsers)
+                .HasForeignKey(d => d.AssignedToUserId)
+                .HasConstraintName("FK_Projects_AssignedToUser");
+
+            entity.HasOne(d => d.CreatedByUser).WithMany(p => p.ProjectCreatedByUsers)
                 .HasForeignKey(d => d.CreatedByUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Projects__Create__2A4B4B5E");
@@ -54,6 +58,10 @@ public partial class WorkTimeTrackerContext : DbContext
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Description).HasMaxLength(1000);
             entity.Property(e => e.Name).HasMaxLength(200);
+
+            entity.HasOne(d => d.AssignedToUser).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.AssignedToUserId)
+                .HasConstraintName("FK_Tasks_AssignedToUser");
 
             entity.HasOne(d => d.Project).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.ProjectId)

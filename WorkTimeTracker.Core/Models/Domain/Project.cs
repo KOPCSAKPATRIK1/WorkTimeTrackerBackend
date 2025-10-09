@@ -15,9 +15,13 @@ public partial class Project
 
     public DateTime? CreatedAt { get; set; }
 
-    public int? CreatedByUserId { get; set; }
+    public int CreatedByUserId { get; set; }
 
-    public virtual User? CreatedByUser { get; set; } = null!;
+    public int? AssignedToUserId { get; set; }
+
+    public virtual User? AssignedToUser { get; set; }
+
+    public virtual User CreatedByUser { get; set; } = null!;
 
     public virtual ICollection<Project> InverseParentProject { get; set; } = new List<Project>();
 

@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using WorkTimeTracker.Core.Interfaces.Repository;
-using WorkTimeTracker.Data;
+using WorkTimeTracker.Repository.Data;
 
 namespace WorkTimeTracker.Repository.Repository
 {
