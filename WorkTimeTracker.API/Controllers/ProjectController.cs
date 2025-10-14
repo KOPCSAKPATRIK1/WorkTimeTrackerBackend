@@ -18,6 +18,20 @@ namespace WorkTimeTracker.API.Controllers
             _projectService = projectService;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<ProjectDto>>> GetAllProjects()
+        {
+            try
+            {
+                var projects = await _projectService.GetAllProjectsAsync();
+                return Ok(projects);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while retrieving projects.", details = ex.Message });
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<ProjectDto>> CreateProject([FromBody] CreateProjectRequest request)
         {

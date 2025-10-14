@@ -10,6 +10,7 @@ namespace WorkTimeTracker.Core.Interfaces.Business
 {
     public interface IProjectService
     {
-         Task<ProjectDto> CreateProjectAsync(Project project);
+        Task<ProjectDto> CreateProjectAsync(Project project);
+        Task<List<ProjectDto>> GetAllProjectsAsync();
     }
 }

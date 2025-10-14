@@ -36,18 +36,31 @@ namespace WorkTimeTracker.Business
                 .GetAllIncluding(p => p.CreatedByUser, p => p.AssignedToUser)
                 .FirstOrDefaultAsync(p => p.Id == project.Id);
 
-            // DTO-ra konvertálás
+            return MapToDto(createdProject);
+        }
+
+        public async Task<List<ProjectDto>> GetAllProjectsAsync()
+        {
+            var projects = await _projectRepository
+                .GetAllIncluding(p => p.CreatedByUser, p => p.AssignedToUser)
+                .ToListAsync();
+
+            return projects.Select(p => MapToDto(p)).ToList();
+        }
+
+        private ProjectDto MapToDto(Project project)
+        {
             return new ProjectDto
             {
-                Id = createdProject.Id,
-                Name = createdProject.Name,
-                Description = createdProject.Description,
-                ParentProjectId = createdProject.ParentProjectId,
-                CreatedAt = createdProject.CreatedAt,
-                CreatedByUserId = createdProject.CreatedByUserId,
-                CreatedByUserName = createdProject.CreatedByUser?.FullName,
-                AssignedToUserId = createdProject.AssignedToUserId,
-                AssignedToUserName = createdProject.AssignedToUser?.FullName
+                Id = project.Id,
+                Name = project.Name,
+                Description = project.Description,
+                ParentProjectId = project.ParentProjectId,
+                CreatedAt = project.CreatedAt,
+                CreatedByUserId = project.CreatedByUserId,
+                CreatedByUserName = project.CreatedByUser?.FullName,
+                AssignedToUserId = project.AssignedToUserId,
+                AssignedToUserName = project.AssignedToUser?.FullName
             };
         }
     }
