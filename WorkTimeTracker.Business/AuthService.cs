@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkTimeTracker.Core.DTOs;
 using WorkTimeTracker.Core.Interfaces.Business;
 using WorkTimeTracker.Core.Interfaces.Repository;
@@ -56,7 +51,6 @@ namespace WorkTimeTracker.Business
 
         public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
         {
-            // User keresése email és jelszó alapján
             var user = await _userRepository
                 .Find(u => u.Email == loginDto.Email && u.PasswordHash == loginDto.Password)
                 .FirstOrDefaultAsync();
@@ -73,14 +67,6 @@ namespace WorkTimeTracker.Business
                 FullName = user.FullName,
                 Expiration = DateTime.UtcNow.AddMinutes(60)
             };
-        }
-
-        public void Logout()
-        {
-            // JWT-vel a kijelentkezés client oldalon történik
-            // A token törlése a client oldalon történik (localStorage/sessionStorage)
-            // Itt opcionálisan lehetne token blacklist-et kezelni
-            // Jelenleg csak egy üres metódus, ami jelzi hogy a logout megtörtént
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WorkTimeTracker.Business;
+using WorkTimeTracker.Core.DTOs;
 using WorkTimeTracker.Core.Interfaces.Business;
 using WorkTimeTracker.Core.Models.Domain;
 
@@ -17,20 +19,31 @@ namespace WorkTimeTracker.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest request)
+        public async Task<ActionResult<ProjectDto>> CreateProject([FromBody] CreateProjectRequest request)
         {
             try
             {
+                // Aktuális bejelentkezett user ID kinyerése a JWT tokenből
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userIdClaim))
+                {
+                    return Unauthorized("User not authenticated.");
+                }
+
+                int currentUserId = int.Parse(userIdClaim);
+
                 var project = new Project
                 {
                     Name = request.Name,
                     Description = request.Description,
-                    CreatedByUserId = 1
+                    ParentProjectId = request.ParentProjectId,
+                    CreatedByUserId = currentUserId, // Bejelentkezett user
+                    AssignedToUserId = request.AssignedToUserId
                 };
 
                 var createdProject = await _projectService.CreateProjectAsync(project);
 
-                return Ok();
+                return CreatedAtAction(nameof(GetProject), new { id = createdProject.Id }, createdProject);
             }
             catch (ArgumentNullException ex)
             {
@@ -46,10 +59,11 @@ namespace WorkTimeTracker.API.Controllers
             }
         }
 
-        public class CreateProjectRequest
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProjectDto>> GetProject(int id)
         {
-            public string Name { get; set; }
-            public string? Description { get; set; }
+            // TODO: Implement later
+            return NotFound();
         }
 
     }
