@@ -58,6 +58,13 @@ namespace WorkTimeTracker.Business
             return projects.Select(p => MapToDto(p)).ToList();
         }
 
+        public ProjectDto GetProject(int id)
+        {
+            var project =  _projectRepository.Get(id);
+
+            return MapToDto(project);
+        }
+
         private ProjectDto MapToDto(Project project)
         {
             return new ProjectDto

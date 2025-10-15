@@ -59,14 +59,6 @@ namespace WorkTimeTracker.API.Controllers
 
                 return CreatedAtAction(nameof(GetProject), new { id = createdProject.Id }, createdProject);
             }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
             catch (Exception ex)
             {
                 return StatusCode(500, new { error = "An error occurred while creating the project.", details = ex.Message });
@@ -74,9 +66,9 @@ namespace WorkTimeTracker.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProjectDto>> GetProject(int id)
+        public  ActionResult<ProjectDto> GetProject(int id)
         {
-
+            return _projectService.GetProject(id);
         }
 
     }
