@@ -14,10 +14,12 @@ namespace WorkTimeTracker.Business
     public class ProjectService : IProjectService
     {
         private readonly IRepository<Project> _projectRepository;
+        private readonly IRepository<User> _userRepository;
 
-        public ProjectService(IRepository<Project> projectRepository)
+        public ProjectService(IRepository<Project> projectRepository, IRepository<User> userRepository)
         {
             _projectRepository = projectRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<ProjectDto> CreateProjectAsync(Project project)
@@ -29,6 +31,9 @@ namespace WorkTimeTracker.Business
                 throw new ArgumentException("Project name is required.", nameof(project));
 
             project.CreatedAt = DateTime.UtcNow;
+
+
+            project.CreatedByUser = _userRepository.Get(project.CreatedByUserId);
             _projectRepository.Add(project);
 
             // Reload a projektet a kapcsolódó adatokkal
@@ -58,16 +63,21 @@ namespace WorkTimeTracker.Business
             return projects.Select(p => MapToDto(p)).ToList();
         }
 
-        public ProjectDto GetProject(int id)
+        public async Task<ProjectDto> GetProjectAsync(int id)
         {
-            var project =  _projectRepository.Get(id);
+            var project = await _projectRepository
+                            .GetAllIncluding(p => p.CreatedByUser, p => p.AssignedToUser)
+                            .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (project == null)
+                throw new KeyNotFoundException($"Project with ID {id} not found.");
 
             return MapToDto(project);
         }
 
         private ProjectDto MapToDto(Project project)
         {
-            return new ProjectDto
+            var x = new ProjectDto
             {
                 Id = project.Id,
                 Name = project.Name,
@@ -79,6 +89,7 @@ namespace WorkTimeTracker.Business
                 AssignedToUserId = project.AssignedToUserId,
                 AssignedToUserName = project.AssignedToUser?.FullName
             };
+            return x;
         }
     }
 

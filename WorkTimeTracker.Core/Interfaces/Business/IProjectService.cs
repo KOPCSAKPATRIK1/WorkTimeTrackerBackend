@@ -14,7 +14,7 @@ namespace WorkTimeTracker.Core.Interfaces.Business
         Task<List<ProjectDto>> GetAllProjectsAsync();
         Task<ProjectDto> EditProject(Project project);
 
-        ProjectDto GetProject(int id);
+         Task<ProjectDto> GetProjectAsync(int id);
         Task DeleteProject(int id);
     }
 }

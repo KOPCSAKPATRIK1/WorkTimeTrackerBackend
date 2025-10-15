@@ -37,12 +37,7 @@ namespace WorkTimeTracker.API.Controllers
         {
             try
             {
-                // Aktuális bejelentkezett user ID kinyerése a JWT tokenből
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (string.IsNullOrEmpty(userIdClaim))
-                {
-                    return Unauthorized("User not authenticated.");
-                }
 
                 int currentUserId = int.Parse(userIdClaim);
 
@@ -66,9 +61,10 @@ namespace WorkTimeTracker.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public  ActionResult<ProjectDto> GetProject(int id)
+        public async Task< ActionResult<ProjectDto>> GetProject(int id)
         {
-            return _projectService.GetProject(id);
+            var x = await _projectService.GetProjectAsync(id);
+            return x;
         }
 
     }
