@@ -39,6 +39,16 @@ namespace WorkTimeTracker.Business
             return MapToDto(createdProject);
         }
 
+        public Task DeleteProject(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ProjectDto> EditProject(Project project)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<ProjectDto>> GetAllProjectsAsync()
         {
             var projects = await _projectRepository

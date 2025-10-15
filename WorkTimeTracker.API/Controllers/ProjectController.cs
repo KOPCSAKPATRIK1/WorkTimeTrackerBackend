@@ -76,8 +76,7 @@ namespace WorkTimeTracker.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProjectDto>> GetProject(int id)
         {
-            // TODO: Implement later
-            return NotFound();
+
         }
 
     }

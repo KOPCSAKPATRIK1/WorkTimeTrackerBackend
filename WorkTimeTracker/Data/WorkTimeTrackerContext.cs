@@ -78,12 +78,12 @@ public partial class WorkTimeTrackerContext : DbContext
 
             entity.HasOne(d => d.Project).WithMany(p => p.TimeEntries)
                 .HasForeignKey(d => d.ProjectId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("FK__TimeEntri__Proje__32E0915F");
 
             entity.HasOne(d => d.Task).WithMany(p => p.TimeEntries)
                 .HasForeignKey(d => d.TaskId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("FK__TimeEntri__TaskI__33D4B598");
 
             entity.HasOne(d => d.User).WithMany(p => p.TimeEntries)
