@@ -34,6 +34,7 @@ public partial class WorkTimeTrackerContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Projects__3214EC072CBBE5E5");
 
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
             entity.Property(e => e.Description).HasMaxLength(1000);
             entity.Property(e => e.Name).HasMaxLength(200);
 
@@ -56,6 +57,7 @@ public partial class WorkTimeTrackerContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Tasks__3214EC07C7D94561");
 
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
             entity.Property(e => e.Description).HasMaxLength(1000);
             entity.Property(e => e.Name).HasMaxLength(200);
 

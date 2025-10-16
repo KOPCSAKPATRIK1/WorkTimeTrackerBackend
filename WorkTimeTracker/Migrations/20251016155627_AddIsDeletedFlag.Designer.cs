@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkTimeTracker.Repository.Data;
 
@@ -11,9 +12,11 @@ using WorkTimeTracker.Repository.Data;
 namespace WorkTimeTracker.Repository.Migrations
 {
     [DbContext(typeof(WorkTimeTrackerContext))]
-    partial class WorkTimeTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20251016155627_AddIsDeletedFlag")]
+    partial class AddIsDeletedFlag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

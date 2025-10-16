@@ -88,5 +88,19 @@ namespace WorkTimeTracker.API.Controllers
             }
         }
 
+        [HttpDelete]
+        public async Task<ActionResult> DeleteProject(int id)
+        {
+            try
+            {
+                await _projectService.DeleteProjectAsync(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while editing the project.", details = ex.Message });
+            }
+        }
+
     }
 }

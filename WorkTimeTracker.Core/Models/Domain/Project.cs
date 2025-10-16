@@ -19,6 +19,8 @@ public partial class Project
 
     public int? AssignedToUserId { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public virtual User? AssignedToUser { get; set; }
 
     public virtual User CreatedByUser { get; set; } = null!;

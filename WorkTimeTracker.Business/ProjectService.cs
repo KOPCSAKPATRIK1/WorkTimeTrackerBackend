@@ -44,14 +44,16 @@ namespace WorkTimeTracker.Business
             return MapToDto(createdProject);
         }
 
-        public Task DeleteProject(int id)
+        public async Task DeleteProjectAsync(int id)
         {
-            throw new NotImplementedException();
+            var x = await _projectRepository.GetAsync(id);
+            x.IsDeleted = true;
+            _projectRepository.Update(x);
         }
 
         public async Task<ProjectDto> EditProject(EditProjectRequest project)
         {
-            var x = _projectRepository.Get(project.Id);
+            var x = await _projectRepository.GetAsync(project.Id);
             x.Description = project.Description;
             x.Name = project.Name;
             x.ParentProjectId = project.ParentProjectId;
@@ -68,7 +70,7 @@ namespace WorkTimeTracker.Business
         public async Task<List<ProjectDto>> GetAllProjectsAsync()
         {
             var projects = await _projectRepository
-                .GetAllIncluding(p => p.CreatedByUser, p => p.AssignedToUser)
+                .GetAllIncluding(p => p.CreatedByUser, p => p.AssignedToUser).Where(p => !p.IsDeleted)
                 .ToListAsync();
 
             return projects.Select(p => MapToDto(p)).ToList();

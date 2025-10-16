@@ -16,9 +16,7 @@ public partial class WorkTask
     public DateTime? CreatedAt { get; set; }
 
     public int? AssignedToUserId { get; set; }
-
-
-
+    public bool IsDeleted { get; set; }
     public virtual User? AssignedToUser { get; set; }
 
     public virtual Project Project { get; set; } = null!;

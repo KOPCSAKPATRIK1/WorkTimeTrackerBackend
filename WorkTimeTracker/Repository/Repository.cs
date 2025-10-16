@@ -26,6 +26,11 @@ namespace WorkTimeTracker.Repository.Repository
             _entities.Find(id);
 #pragma warning restore CS8603 // Possible null reference return.
 
+        public async Task<TEntity> GetAsync(int id)
+        {
+            return await _entities.FindAsync(id);
+        }
+
         public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = _entities;
