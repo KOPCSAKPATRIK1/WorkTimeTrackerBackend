@@ -52,7 +52,7 @@ namespace WorkTimeTracker.API.Controllers
 
                 var createdProject = await _projectService.CreateProjectAsync(project);
 
-                return CreatedAtAction(nameof(GetProject), new { id = createdProject.Id }, createdProject);
+                return  createdProject;
             }
             catch (Exception ex)
             {
@@ -63,8 +63,29 @@ namespace WorkTimeTracker.API.Controllers
         [HttpGet("{id}")]
         public async Task< ActionResult<ProjectDto>> GetProject(int id)
         {
-            var x = await _projectService.GetProjectAsync(id);
-            return x;
+            return await _projectService.GetProjectAsync(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ProjectDto>> Edit([FromBody] EditProjectRequest request)
+        {
+            try
+            {
+                var project = new Project
+                {
+                    Name = request.Name,
+                    Description = request.Description,
+                    ParentProjectId = request.Id
+                };
+
+                var editedProject = await _projectService.EditProject(request);
+
+                return editedProject;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while editing the project.", details = ex.Message });
+            }
         }
 
     }

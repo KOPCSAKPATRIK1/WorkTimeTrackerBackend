@@ -17,6 +17,8 @@ public partial class WorkTask
 
     public int? AssignedToUserId { get; set; }
 
+
+
     public virtual User? AssignedToUser { get; set; }
 
     public virtual Project Project { get; set; } = null!;

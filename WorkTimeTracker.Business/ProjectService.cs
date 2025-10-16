@@ -49,9 +49,20 @@ namespace WorkTimeTracker.Business
             throw new NotImplementedException();
         }
 
-        public Task<ProjectDto> EditProject(Project project)
+        public async Task<ProjectDto> EditProject(EditProjectRequest project)
         {
-            throw new NotImplementedException();
+            var x = _projectRepository.Get(project.Id);
+            x.Description = project.Description;
+            x.Name = project.Name;
+            x.ParentProjectId = project.ParentProjectId;
+            _projectRepository.Update(x);
+
+            var editedProject = await _projectRepository
+            .GetAllIncluding(p => p.CreatedByUser, p => p.AssignedToUser)
+            .FirstOrDefaultAsync(p => p.Id == project.Id);
+
+            return MapToDto(editedProject);
+
         }
 
         public async Task<List<ProjectDto>> GetAllProjectsAsync()
