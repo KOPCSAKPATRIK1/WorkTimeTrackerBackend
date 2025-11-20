@@ -9,10 +9,8 @@ namespace WorkTimeTracker.Core.Interfaces.Business
 {
     public interface IUserService
     {
+        Task<UserDto> GetUserAsync(int id);
         Task<List<UserDto>> GetAllUsersAsync();
-        Task<ProjectDto> AssignUserToProjectAsync(int projectId, int userId);
-        Task<ProjectDto> UnassignUserFromProjectAsync(int projectId);
-        Task AssignUserToTaskAsync(int taskId, int userId);
-        Task UnassignUserFromTaskAsync(int taskId);
+
     }
 }

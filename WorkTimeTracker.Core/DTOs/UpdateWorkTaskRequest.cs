@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace WorkTimeTracker.Core.DTOs
 {
-    public class EditProjectRequest
+    public class UpdateWorkTaskRequest
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
-        public int? ParentProjectId { get; set; }
         public int? AssignedToUserId { get; set; }
     }
 }

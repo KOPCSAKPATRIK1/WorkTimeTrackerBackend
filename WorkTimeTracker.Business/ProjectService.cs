@@ -57,6 +57,7 @@ namespace WorkTimeTracker.Business
             x.Description = project.Description;
             x.Name = project.Name;
             x.ParentProjectId = project.ParentProjectId;
+            x.AssignedToUserId = project.AssignedToUserId;
             _projectRepository.Update(x);
 
             var editedProject = await _projectRepository
